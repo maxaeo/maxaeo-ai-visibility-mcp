@@ -1,0 +1,46 @@
+{
+  "name": "maxaeo-ai-visibility-mcp",
+  "version": "0.1.0",
+  "description": "Local-first MCP server for AI visibility audits, llms.txt checks, and AI crawler readiness.",
+  "type": "module",
+  "bin": {
+    "maxaeo-ai-visibility-mcp": "bin/maxaeo-ai-visibility-mcp.js"
+  },
+  "files": [
+    "bin",
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "test": "node --test",
+    "start": "node bin/maxaeo-ai-visibility-mcp.js"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "ai-visibility",
+    "aeo",
+    "llms.txt",
+    "seo",
+    "crawler"
+  ],
+  "author": "MaxAEO",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "zod": "^4.2.1"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/maxaeo/maxaeo-ai-visibility-mcp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/maxaeo/maxaeo-ai-visibility-mcp/issues"
+  },
+  "homepage": "https://github.com/maxaeo/maxaeo-ai-visibility-mcp#readme",
+  "engines": {
+    "node": ">=20"
+  }
+}
