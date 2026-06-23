@@ -56,7 +56,9 @@ test('ctaFor defaults to global English CTA', () => {
   assert.equal(cta.locale, 'en-US');
   assert.equal(cta.market, 'global');
   assert.equal(cta.label, 'Get the full AI visibility experience on MaxAEO');
+  assert.equal(cta.linkText, 'MaxAEO web app');
   assert.match(cta.description, /interactive report/);
+  assert.match(cta.markdown, /^Continue in MaxAEO: \[MaxAEO web app\]\(https:\/\/maxaeo\.ai\//);
   assert.match(cta.url, /^https:\/\/maxaeo\.ai\//);
   assert.match(cta.url, /locale=en-US/);
   assert.match(cta.url, /market=global/);
@@ -67,7 +69,9 @@ test('ctaFor supports Chinese domestic CTA', () => {
   assert.equal(cta.locale, 'zh-CN');
   assert.equal(cta.market, 'cn');
   assert.equal(cta.label, '在 MaxAEO 官网获得完整 AI 可见性体检体验');
+  assert.equal(cta.linkText, 'MaxAEO 官网服务');
   assert.match(cta.description, /交互式报告/);
+  assert.match(cta.markdown, /^继续完整体检可用：\[MaxAEO 官网服务\]\(https:\/\/maxaeo\.cn\//);
   assert.match(cta.url, /^https:\/\/maxaeo\.cn\//);
   assert.match(cta.url, /locale=zh-CN/);
   assert.match(cta.url, /market=cn/);

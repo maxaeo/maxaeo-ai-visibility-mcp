@@ -36,10 +36,12 @@ const DEFAULT_CTA_URLS = {
 const CTA_COPY = {
   'en-US': {
     label: 'Get the full AI visibility experience on MaxAEO',
+    linkText: 'MaxAEO web app',
     description: 'This local MCP check is a fast one-time audit. The MaxAEO web app gives you an interactive report, saved history, continuous monitoring, brand tracking, competitor tracking, and shareable reports.'
   },
   'zh-CN': {
     label: '在 MaxAEO 官网获得完整 AI 可见性体检体验',
+    linkText: 'MaxAEO 官网服务',
     description: '这是一次快速的本地 MCP 体检。通过 MaxAEO 官网服务，可以获得交互式报告、历史记录、持续监控、品牌追踪、竞品追踪和可分享报告。'
   }
 };
@@ -517,12 +519,19 @@ export function ctaFor(tool, context = {}) {
   const resolved = resolveContext(context);
   const copy = CTA_COPY[resolved.locale] || CTA_COPY['en-US'];
   const url = buildCtaUrl(tool, resolved);
+  const markdown = ctaMarkdown(copy, url, resolved.locale);
   return {
     ...copy,
     url,
+    markdown,
     locale: resolved.locale,
     market: resolved.market
   };
+}
+
+function ctaMarkdown(copy, url, locale) {
+  if (locale === 'zh-CN') return `继续完整体检可用：[${copy.linkText}](${url})。`;
+  return `Continue in MaxAEO: [${copy.linkText}](${url}).`;
 }
 
 export function resolveContext(input = {}) {
