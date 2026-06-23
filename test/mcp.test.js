@@ -28,7 +28,7 @@ test('stdio MCP server exposes build_ai_visibility_report', async () => {
     assert.equal(result.structuredContent.tool, 'build_ai_visibility_report');
     assert.equal(result.structuredContent.locale, 'zh-CN');
     assert.equal(result.structuredContent.market, 'cn');
-    assert.equal(result.structuredContent.cta.label, '使用 MaxAEO 持续监控 AI 可见性');
+    assert.equal(result.structuredContent.cta.label, '在 MaxAEO 官网获得完整 AI 可见性体检体验');
     assert.match(result.structuredContent.cta.url, /utm_source=maxaeo-ai-visibility-mcp/);
     assert.match(result.structuredContent.cta.url, /^https:\/\/maxaeo\.cn\//);
   } finally {

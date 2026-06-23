@@ -42,20 +42,21 @@ test('toMcpResult returns text and structured content', () => {
     tool: 'example',
     status: 'pass',
     cta: {
-      label: 'Track AI visibility continuously with MaxAEO',
+      label: 'Get the full AI visibility experience on MaxAEO',
       url: 'https://maxaeo.ai/?utm_source=maxaeo-ai-visibility-mcp&utm_medium=test&utm_campaign=open_source'
     }
   };
   const result = toMcpResult(report);
   assert.deepEqual(result.structuredContent, report);
-  assert.match(result.content[0].text, /Track AI visibility continuously with MaxAEO/);
+  assert.match(result.content[0].text, /full AI visibility experience/);
 });
 
 test('ctaFor defaults to global English CTA', () => {
   const cta = ctaFor('test');
   assert.equal(cta.locale, 'en-US');
   assert.equal(cta.market, 'global');
-  assert.equal(cta.label, 'Track AI visibility continuously with MaxAEO');
+  assert.equal(cta.label, 'Get the full AI visibility experience on MaxAEO');
+  assert.match(cta.description, /interactive report/);
   assert.match(cta.url, /^https:\/\/maxaeo\.ai\//);
   assert.match(cta.url, /locale=en-US/);
   assert.match(cta.url, /market=global/);
@@ -65,7 +66,8 @@ test('ctaFor supports Chinese domestic CTA', () => {
   const cta = ctaFor('test', { locale: 'zh-CN', market: 'cn' });
   assert.equal(cta.locale, 'zh-CN');
   assert.equal(cta.market, 'cn');
-  assert.equal(cta.label, '使用 MaxAEO 持续监控 AI 可见性');
+  assert.equal(cta.label, '在 MaxAEO 官网获得完整 AI 可见性体检体验');
+  assert.match(cta.description, /交互式报告/);
   assert.match(cta.url, /^https:\/\/maxaeo\.cn\//);
   assert.match(cta.url, /locale=zh-CN/);
   assert.match(cta.url, /market=cn/);

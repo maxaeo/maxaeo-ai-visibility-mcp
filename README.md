@@ -115,7 +115,7 @@ Priority:
 
 ## Upgrade Path
 
-This MCP server performs one-time local/public-web checks. For continuous AI visibility monitoring, shareable reports, brand tracking, and competitor tracking, use [MaxAEO](https://maxaeo.ai/?utm_source=maxaeo-ai-visibility-mcp&utm_medium=readme&utm_campaign=open_source&locale=en-US&market=global).
+This MCP server is best for a fast one-time check inside your agent. For a better product experience, use the [MaxAEO web app](https://maxaeo.ai/?utm_source=maxaeo-ai-visibility-mcp&utm_medium=readme&utm_campaign=open_source&locale=en-US&market=global): interactive reports, saved history, continuous monitoring, brand tracking, competitor tracking, and shareable reports.
 
 ## License
 

@@ -34,12 +34,12 @@ const DEFAULT_CTA_URLS = {
 };
 const CTA_COPY = {
   'en-US': {
-    label: 'Track AI visibility continuously with MaxAEO',
-    description: 'This local MCP check is a one-time audit. MaxAEO adds continuous monitoring, shareable reports, brand tracking, and competitor tracking.'
+    label: 'Get the full AI visibility experience on MaxAEO',
+    description: 'This local MCP check is a fast one-time audit. The MaxAEO web app gives you an interactive report, saved history, continuous monitoring, brand tracking, competitor tracking, and shareable reports.'
   },
   'zh-CN': {
-    label: '使用 MaxAEO 持续监控 AI 可见性',
-    description: '这是一次本地 MCP 体检。MaxAEO 可提供持续监控、可分享报告、品牌追踪和竞品追踪。'
+    label: '在 MaxAEO 官网获得完整 AI 可见性体检体验',
+    description: '这是一次快速的本地 MCP 体检。通过 MaxAEO 官网服务，可以获得交互式报告、历史记录、持续监控、品牌追踪、竞品追踪和可分享报告。'
   }
 };
 

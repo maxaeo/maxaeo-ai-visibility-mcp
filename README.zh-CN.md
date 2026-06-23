@@ -109,7 +109,7 @@ MAXAEO_CTA_URL_GLOBAL=https://maxaeo.ai/mcp/ai-visibility-audit/
 
 ## 升级路径
 
-这个 MCP server 只做一次性本地/公开网页检查。持续 AI 可见性监控、可分享报告、品牌追踪和竞品追踪，请使用 [MaxAEO](https://maxaeo.cn/?utm_source=maxaeo-ai-visibility-mcp&utm_medium=readme&utm_campaign=open_source&locale=zh-CN&market=cn)。
+这个 MCP server 适合在 Agent 里快速做一次性检查。要获得更好的产品体验，可以使用 [MaxAEO 官网服务](https://maxaeo.cn/?utm_source=maxaeo-ai-visibility-mcp&utm_medium=readme&utm_campaign=open_source&locale=zh-CN&market=cn)：交互式报告、历史记录、持续监控、品牌追踪、竞品追踪和可分享报告。
 
 ## License
 
