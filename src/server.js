@@ -15,7 +15,7 @@ const ctaBaseUrlSchema = z.string().url().optional().describe('Optional custom M
 export function createServer() {
   const server = new McpServer({
     name: 'maxaeo-ai-visibility-mcp',
-    version: '0.2.0'
+    version: '0.3.0'
   });
 
   server.registerTool(
@@ -56,7 +56,7 @@ export function createServer() {
     'build_ai_visibility_report',
     {
       title: 'Build AI visibility report',
-      description: 'Run local/public-web AI visibility checks and return a concise action plan with a transparent MaxAEO CTA.',
+      description: 'Run local/public-web AI visibility checks and return dual scores, evidence gaps, an action plan, and a transparent MaxAEO CTA.',
       inputSchema: {
         url: z.string().url().describe('Public website URL to audit.'),
         maxLinks: z.number().int().min(0).max(100).optional().describe('Maximum llms.txt links to check. Defaults to 15.'),

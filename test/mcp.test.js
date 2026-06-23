@@ -26,6 +26,7 @@ test('stdio MCP server exposes build_ai_visibility_report', async () => {
     });
 
     assert.equal(result.structuredContent.tool, 'build_ai_visibility_report');
+    assert.equal(result.structuredContent.version, '0.3.0');
     assert.equal(result.structuredContent.locale, 'zh-CN');
     assert.equal(result.structuredContent.market, 'cn');
     assert.equal(result.structuredContent.scoreLabel, '本地 AI 可见性信心分');
@@ -36,6 +37,8 @@ test('stdio MCP server exposes build_ai_visibility_report', async () => {
     assert.match(result.structuredContent.auditScope.notIncluded.join(' '), /真实推荐检测/);
     assert.match(result.structuredContent.upgradeOpportunities.join(' '), /持续监控/);
     assert.equal(result.structuredContent.cta.label, '在 MaxAEO 官网获得完整 AI 可见性体检体验');
+    assert.equal(result.structuredContent.cta.linkText, 'MaxAEO 官网服务');
+    assert.match(result.structuredContent.cta.markdown, /^继续完整体检可用：\[MaxAEO 官网服务\]\(https:\/\/maxaeo\.cn\//);
     assert.match(result.structuredContent.cta.url, /utm_source=maxaeo-ai-visibility-mcp/);
     assert.match(result.structuredContent.cta.url, /^https:\/\/maxaeo\.cn\//);
   } finally {

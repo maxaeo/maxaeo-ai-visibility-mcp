@@ -1,6 +1,6 @@
 const DEFAULT_TIMEOUT_MS = 10000;
 const DEFAULT_MAX_LINKS = 30;
-const TOOL_VERSION = '0.2.0';
+const TOOL_VERSION = '0.3.0';
 const AI_CRAWLERS = [
   'GPTBot',
   'ChatGPT-User',
@@ -326,7 +326,7 @@ async function fetchWithTimeout(url, options) {
       method: options.method,
       signal: controller.signal,
       redirect: 'follow',
-      headers: { 'user-agent': 'maxaeo-ai-visibility-mcp/0.2' }
+      headers: { 'user-agent': 'maxaeo-ai-visibility-mcp/0.3' }
     });
   } finally {
     clearTimeout(timeout);

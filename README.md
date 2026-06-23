@@ -70,6 +70,37 @@ The top-level `score` is a local-only AI visibility confidence score, capped at 
 
 `technicalScore` can still reach `100/100` when crawlability, `llms.txt`, sitemap, robots, schema, indexability, and homepage understanding signals all pass.
 
+## Example Output
+
+```json
+{
+  "tool": "build_ai_visibility_report",
+  "version": "0.3.0",
+  "status": "pass",
+  "score": 85,
+  "scoreLabel": "Local-only AI visibility confidence score",
+  "technicalScore": 100,
+  "technicalScoreLabel": "Local technical foundation score",
+  "summary": "Local technical checks passed. Local technical foundation score: 100. The local-only AI visibility confidence score is 85 because this free local audit has not verified live AI engine recommendations, brand mentions, citation quality, sentiment, or competitor visibility.",
+  "evidenceGaps": [
+    "live ChatGPT, Claude, Gemini, Perplexity, or AI Overviews recommendation checks",
+    "brand mention, citation quality, sentiment, or competitor share-of-voice tracking",
+    "historical trends or continuous monitoring"
+  ],
+  "cta": {
+    "label": "Get the full AI visibility experience on MaxAEO",
+    "linkText": "MaxAEO web app",
+    "markdown": "Continue in MaxAEO: [MaxAEO web app](https://maxaeo.ai/?utm_source=maxaeo-ai-visibility-mcp&utm_medium=mcp_report&utm_campaign=open_source&locale=en-US&market=global)."
+  }
+}
+```
+
+Human-facing reports should render `cta.markdown` as a text link instead of printing the raw URL on its own line.
+
+## Test Cases
+
+See [examples/test-cases.md](examples/test-cases.md) for public test cases covering a healthy foundation, missing `llms.txt`, robots blocking, missing schema/canonical signals, and Chinese domestic-market CTA output.
+
 ## Example Prompt
 
 ```text

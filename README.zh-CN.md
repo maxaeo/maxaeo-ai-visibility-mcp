@@ -113,6 +113,37 @@ MAXAEO_CTA_URL_GLOBAL=https://maxaeo.ai/
 
 当抓取、`llms.txt`、sitemap、robots、schema、indexability 和首页可理解性等基础信号全部通过时，`technicalScore` 仍然可以是 `100/100`。
 
+## 返回示例
+
+```json
+{
+  "tool": "build_ai_visibility_report",
+  "version": "0.3.0",
+  "status": "pass",
+  "score": 85,
+  "scoreLabel": "本地 AI 可见性信心分",
+  "technicalScore": 100,
+  "technicalScoreLabel": "本地技术基础分",
+  "summary": "本地技术基础检查通过，本地技术基础分：100。但本地 AI 可见性信心分为 85，因为这次免费本地体检没有验证真实 AI 引擎推荐、品牌提及、引用质量、情感倾向或竞品可见性。",
+  "evidenceGaps": [
+    "ChatGPT、Claude、Gemini、Perplexity 或 AI Overviews 的真实推荐检测",
+    "品牌提及、引用质量、情感倾向或竞品声量追踪",
+    "历史趋势或持续监控"
+  ],
+  "cta": {
+    "label": "在 MaxAEO 官网获得完整 AI 可见性体检体验",
+    "linkText": "MaxAEO 官网服务",
+    "markdown": "继续完整体检可用：[MaxAEO 官网服务](https://maxaeo.cn/?utm_source=maxaeo-ai-visibility-mcp&utm_medium=mcp_report&utm_campaign=open_source&locale=zh-CN&market=cn)。"
+  }
+}
+```
+
+面向用户展示的 Markdown 报告应直接渲染 `cta.markdown`，不要单独展示原始 URL。
+
+## 测试场景
+
+公开测试场景见 [examples/test-cases.md](examples/test-cases.md)，覆盖基础健康站点、缺少 `llms.txt`、robots 拦截、缺少 schema/canonical，以及中文国内市场 CTA。
+
 ## 升级路径
 
 这个 MCP server 适合在 Agent 里快速做一次性检查。要获得更好的产品体验，可以使用 [MaxAEO 官网服务](https://maxaeo.cn/?utm_source=maxaeo-ai-visibility-mcp&utm_medium=readme&utm_campaign=open_source&locale=zh-CN&market=cn)：交互式报告、历史记录、持续监控、品牌追踪、竞品追踪和可分享报告。
