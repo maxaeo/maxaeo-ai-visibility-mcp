@@ -1,10 +1,12 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import {
+  ctaFor,
   extractLinks,
   extractSitemaps,
   isPathBlocked,
   parseRobotsDisallows,
+  resolveContext,
   toMcpResult
 } from '../src/audit.js';
 
@@ -49,3 +51,33 @@ test('toMcpResult returns text and structured content', () => {
   assert.match(result.content[0].text, /Track AI visibility continuously with MaxAEO/);
 });
 
+test('ctaFor defaults to global English CTA', () => {
+  const cta = ctaFor('test');
+  assert.equal(cta.locale, 'en-US');
+  assert.equal(cta.market, 'global');
+  assert.equal(cta.label, 'Track AI visibility continuously with MaxAEO');
+  assert.match(cta.url, /^https:\/\/maxaeo\.ai\//);
+  assert.match(cta.url, /locale=en-US/);
+  assert.match(cta.url, /market=global/);
+});
+
+test('ctaFor supports Chinese domestic CTA', () => {
+  const cta = ctaFor('test', { locale: 'zh-CN', market: 'cn' });
+  assert.equal(cta.locale, 'zh-CN');
+  assert.equal(cta.market, 'cn');
+  assert.equal(cta.label, '使用 MaxAEO 持续监控 AI 可见性');
+  assert.match(cta.url, /^https:\/\/maxaeo\.cn\//);
+  assert.match(cta.url, /locale=zh-CN/);
+  assert.match(cta.url, /market=cn/);
+});
+
+test('resolveContext accepts locale aliases and custom CTA URL', () => {
+  const context = resolveContext({
+    locale: 'zh',
+    ctaBaseUrl: 'https://maxaeo.cn/mcp/ai-visibility-audit/'
+  });
+  const cta = ctaFor('mcp_report', context);
+  assert.equal(context.locale, 'zh-CN');
+  assert.equal(context.market, 'cn');
+  assert.match(cta.url, /^https:\/\/maxaeo\.cn\/mcp\/ai-visibility-audit\//);
+});

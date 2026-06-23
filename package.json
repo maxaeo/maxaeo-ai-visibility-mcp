@@ -1,6 +1,6 @@
 {
   "name": "maxaeo-ai-visibility-mcp",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Local-first MCP server for AI visibility audits, llms.txt checks, and AI crawler readiness.",
   "type": "module",
   "bin": {
@@ -10,6 +10,7 @@
     "bin",
     "src",
     "README.md",
+    "README.zh-CN.md",
     "LICENSE"
   ],
   "scripts": {

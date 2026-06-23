@@ -8,10 +8,14 @@ import {
   toMcpResult
 } from './audit.js';
 
+const localeSchema = z.string().optional().describe('Output locale. Supported values and aliases: en-US, en, global, zh-CN, zh, cn. Defaults to en-US or MAXAEO_LOCALE.');
+const marketSchema = z.enum(['global', 'cn']).optional().describe('Promotion market for the MaxAEO CTA. global uses maxaeo.ai; cn uses maxaeo.cn. Defaults from locale or MAXAEO_MARKET.');
+const ctaBaseUrlSchema = z.string().url().optional().describe('Optional custom MaxAEO CTA base URL. Overrides market defaults and MAXAEO_CTA_URL_* environment variables.');
+
 export function createServer() {
   const server = new McpServer({
     name: 'maxaeo-ai-visibility-mcp',
-    version: '0.1.0'
+    version: '0.2.0'
   });
 
   server.registerTool(
@@ -23,7 +27,10 @@ export function createServer() {
         url: z.string().url().describe('Public website URL to audit.'),
         maxLinks: z.number().int().min(0).max(100).optional().describe('Maximum llms.txt links to check. Defaults to 30.'),
         checkLinks: z.boolean().optional().describe('Whether to check linked URLs. Defaults to true.'),
-        timeoutMs: z.number().int().min(1000).max(30000).optional().describe('Request timeout in milliseconds. Defaults to 10000.')
+        timeoutMs: z.number().int().min(1000).max(30000).optional().describe('Request timeout in milliseconds. Defaults to 10000.'),
+        locale: localeSchema,
+        market: marketSchema,
+        ctaBaseUrl: ctaBaseUrlSchema
       }
     },
     async (input) => toMcpResult(await checkLlmsTxt(input))
@@ -36,7 +43,10 @@ export function createServer() {
       description: 'Check robots rules, AI crawler access basics, homepage metadata, canonical, noindex, and JSON-LD schema. No MaxAEO APIs are called.',
       inputSchema: {
         url: z.string().url().describe('Public website URL to audit.'),
-        timeoutMs: z.number().int().min(1000).max(30000).optional().describe('Request timeout in milliseconds. Defaults to 10000.')
+        timeoutMs: z.number().int().min(1000).max(30000).optional().describe('Request timeout in milliseconds. Defaults to 10000.'),
+        locale: localeSchema,
+        market: marketSchema,
+        ctaBaseUrl: ctaBaseUrlSchema
       }
     },
     async (input) => toMcpResult(await auditAiCrawlerReadiness(input))
@@ -51,7 +61,10 @@ export function createServer() {
         url: z.string().url().describe('Public website URL to audit.'),
         maxLinks: z.number().int().min(0).max(100).optional().describe('Maximum llms.txt links to check. Defaults to 15.'),
         checkLinks: z.boolean().optional().describe('Whether to check linked URLs. Defaults to true.'),
-        timeoutMs: z.number().int().min(1000).max(30000).optional().describe('Request timeout in milliseconds. Defaults to 10000.')
+        timeoutMs: z.number().int().min(1000).max(30000).optional().describe('Request timeout in milliseconds. Defaults to 10000.'),
+        locale: localeSchema,
+        market: marketSchema,
+        ctaBaseUrl: ctaBaseUrlSchema
       }
     },
     async (input) => toMcpResult(await buildAiVisibilityReport(input))
@@ -65,4 +78,3 @@ export async function main() {
   const transport = new StdioServerTransport();
   await server.connect(transport);
 }
-

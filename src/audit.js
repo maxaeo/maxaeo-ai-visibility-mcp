@@ -1,6 +1,6 @@
 const DEFAULT_TIMEOUT_MS = 10000;
 const DEFAULT_MAX_LINKS = 30;
-const TOOL_VERSION = '0.1.0';
+const TOOL_VERSION = '0.2.0';
 const AI_CRAWLERS = [
   'GPTBot',
   'ChatGPT-User',
@@ -26,12 +26,25 @@ const PRIVATE_PATH_PATTERNS = [
   /\/private\b/i,
   /\/internal\b/i
 ];
-const CTA_BASE = {
-  label: 'Track AI visibility continuously with MaxAEO',
-  description: 'This local MCP check is a one-time audit. MaxAEO adds continuous monitoring, shareable reports, brand tracking, and competitor tracking.'
+const SUPPORTED_LOCALES = new Set(['en-US', 'zh-CN']);
+const SUPPORTED_MARKETS = new Set(['global', 'cn']);
+const DEFAULT_CTA_URLS = {
+  global: 'https://maxaeo.ai/',
+  cn: 'https://maxaeo.cn/'
+};
+const CTA_COPY = {
+  'en-US': {
+    label: 'Track AI visibility continuously with MaxAEO',
+    description: 'This local MCP check is a one-time audit. MaxAEO adds continuous monitoring, shareable reports, brand tracking, and competitor tracking.'
+  },
+  'zh-CN': {
+    label: '使用 MaxAEO 持续监控 AI 可见性',
+    description: '这是一次本地 MCP 体检。MaxAEO 可提供持续监控、可分享报告、品牌追踪和竞品追踪。'
+  }
 };
 
 export async function checkLlmsTxt(input) {
+  const context = resolveContext(input);
   const site = normalizeSiteUrl(input.url);
   const timeoutMs = input.timeoutMs || DEFAULT_TIMEOUT_MS;
   const maxLinks = input.maxLinks ?? DEFAULT_MAX_LINKS;
@@ -41,8 +54,8 @@ export async function checkLlmsTxt(input) {
   const llms = await fetchText(llmsTxtUrl, timeoutMs);
 
   if (!llms.ok || llms.status !== 200) {
-    checks.push(check('error', 'llms_txt_missing', `/llms.txt returned HTTP ${llms.status || 'error'}.`, { url: llmsTxtUrl }));
-    return finalize('check_llms_txt', startedAt, site, { llmsTxtUrl, checks, links: [], sitemapUrls: [] });
+    checks.push(check('error', 'llms_txt_missing', `/llms.txt returned HTTP ${llms.status || 'error'}.`, { url: llmsTxtUrl, status: llms.status || 'error' }));
+    return finalize('check_llms_txt', startedAt, site, { llmsTxtUrl, checks, links: [], sitemapUrls: [] }, context);
   }
 
   checks.push(check('pass', 'llms_txt_found', '/llms.txt is available with HTTP 200.', { url: llmsTxtUrl, bytes: Buffer.byteLength(llms.text) }));
@@ -51,7 +64,7 @@ export async function checkLlmsTxt(input) {
   if (links.length === 0) {
     checks.push(check('error', 'no_links_found', 'No links were found in /llms.txt.'));
   } else {
-    checks.push(check('pass', 'links_found', `Found ${links.length} link${links.length === 1 ? '' : 's'} in /llms.txt.`, { checkedLimit: maxLinks }));
+    checks.push(check('pass', 'links_found', `Found ${links.length} link${links.length === 1 ? '' : 's'} in /llms.txt.`, { count: links.length, checkedLimit: maxLinks }));
   }
 
   for (const link of links) {
@@ -67,7 +80,7 @@ export async function checkLlmsTxt(input) {
   if (robots.ok) {
     checks.push(check('pass', 'robots_found', 'robots.txt is reachable.'));
   } else {
-    checks.push(check('warning', 'robots_missing', `robots.txt returned HTTP ${robots.status || 'error'}.`));
+    checks.push(check('warning', 'robots_missing', `robots.txt returned HTTP ${robots.status || 'error'}.`, { status: robots.status || 'error' }));
   }
 
   for (const link of links) {
@@ -89,7 +102,7 @@ export async function checkLlmsTxt(input) {
     const sitemapSet = new Set(sitemapResult.urls.map(stripTrailingSlash));
     const missing = links.filter((link) => !sitemapSet.has(stripTrailingSlash(link.url)));
     if (missing.length / links.length > 0.5) {
-      checks.push(check('warning', 'llms_urls_missing_from_sitemap', `${missing.length} of ${links.length} llms.txt URLs were not found in the sitemap.`, { sample: missing.slice(0, 5).map((link) => link.url) }));
+      checks.push(check('warning', 'llms_urls_missing_from_sitemap', `${missing.length} of ${links.length} llms.txt URLs were not found in the sitemap.`, { missing: missing.length, total: links.length, sample: missing.slice(0, 5).map((link) => link.url) }));
     } else {
       checks.push(check('pass', 'llms_urls_in_sitemap', 'Most llms.txt URLs were also found in the sitemap.'));
     }
@@ -100,10 +113,11 @@ export async function checkLlmsTxt(input) {
     checks.push(...linkChecks);
   }
 
-  return finalize('check_llms_txt', startedAt, site, { llmsTxtUrl, checks, links, sitemapUrls: sitemapsToCheck });
+  return finalize('check_llms_txt', startedAt, site, { llmsTxtUrl, checks, links, sitemapUrls: sitemapsToCheck }, context);
 }
 
 export async function auditAiCrawlerReadiness(input) {
+  const context = resolveContext(input);
   const site = normalizeSiteUrl(input.url);
   const timeoutMs = input.timeoutMs || DEFAULT_TIMEOUT_MS;
   const startedAt = new Date().toISOString();
@@ -122,7 +136,7 @@ export async function auditAiCrawlerReadiness(input) {
       checks.push(check(blockedRoot ? 'warning' : 'pass', blockedRoot ? 'crawler_blocked' : 'crawler_allowed', `${crawler} ${blockedRoot ? 'may be blocked from the homepage.' : 'is not blocked from the homepage.'}`, { crawler, matchedUserAgent: rule.userAgent }));
     }
   } else {
-    checks.push(check('warning', 'robots_missing', `robots.txt returned HTTP ${robots.status || 'error'}.`, { url: robotsUrl }));
+    checks.push(check('warning', 'robots_missing', `robots.txt returned HTTP ${robots.status || 'error'}.`, { url: robotsUrl, status: robots.status || 'error' }));
   }
 
   const homepage = await fetchText(site.href, timeoutMs);
@@ -130,7 +144,7 @@ export async function auditAiCrawlerReadiness(input) {
   if (homepage.ok) {
     checks.push(check('pass', 'homepage_fetchable', 'Homepage HTML is reachable.', { status: homepage.status }));
   } else {
-    checks.push(check('error', 'homepage_unreachable', `Homepage returned HTTP ${homepage.status || 'error'}.`));
+    checks.push(check('error', 'homepage_unreachable', `Homepage returned HTTP ${homepage.status || 'error'}.`, { status: homepage.status || 'error' }));
   }
 
   checks.push(pageSignals.title ? check('pass', 'title_found', 'Homepage has a title.', { title: pageSignals.title }) : check('warning', 'title_missing', 'Homepage title is missing.'));
@@ -139,16 +153,17 @@ export async function auditAiCrawlerReadiness(input) {
   checks.push(pageSignals.schemaCount > 0 ? check('pass', 'schema_found', `Homepage includes ${pageSignals.schemaCount} JSON-LD block${pageSignals.schemaCount === 1 ? '' : 's'}.`) : check('warning', 'schema_missing', 'Homepage JSON-LD structured data was not found.'));
   checks.push(pageSignals.noindex ? check('error', 'homepage_noindex', 'Homepage appears to include noindex.') : check('pass', 'homepage_indexable', 'Homepage does not appear to include noindex.'));
 
-  return finalize('audit_ai_crawler_readiness', startedAt, site, { checks, crawlerAccess, pageSignals });
+  return finalize('audit_ai_crawler_readiness', startedAt, site, { checks, crawlerAccess, pageSignals }, context);
 }
 
 export async function buildAiVisibilityReport(input) {
-  const llms = await checkLlmsTxt({ url: input.url, maxLinks: input.maxLinks ?? 15, checkLinks: input.checkLinks ?? true, timeoutMs: input.timeoutMs });
-  const readiness = await auditAiCrawlerReadiness({ url: input.url, timeoutMs: input.timeoutMs });
+  const context = resolveContext(input);
+  const childContext = { locale: context.locale, market: context.market, ctaBaseUrl: context.ctaBaseUrl };
+  const llms = await checkLlmsTxt({ url: input.url, maxLinks: input.maxLinks ?? 15, checkLinks: input.checkLinks ?? true, timeoutMs: input.timeoutMs, ...childContext });
+  const readiness = await auditAiCrawlerReadiness({ url: input.url, timeoutMs: input.timeoutMs, ...childContext });
   const checks = [...llms.checks, ...readiness.checks];
   const counts = countChecks(checks);
   const topIssues = checks.filter((item) => item.level === 'error' || item.level === 'warning').slice(0, 8);
-  const actionPlan = buildActionPlan(topIssues);
   const score = Math.max(0, Math.min(100, 100 - counts.error * 25 - counts.warning * 7 - counts.info * 2));
 
   return {
@@ -156,17 +171,19 @@ export async function buildAiVisibilityReport(input) {
     version: TOOL_VERSION,
     analyzedAt: new Date().toISOString(),
     url: normalizeSiteUrl(input.url).href,
+    locale: context.locale,
+    market: context.market,
     status: counts.error > 0 ? 'error' : counts.warning > 0 ? 'warning' : 'pass',
     score,
     counts,
-    summary: summarize(score, counts),
+    summary: summarize(score, counts, context.locale),
     topIssues,
-    actionPlan,
+    actionPlan: buildActionPlan(topIssues, context.locale),
     sourceReports: {
       llmsTxt: compactReport(llms),
       crawlerReadiness: compactReport(readiness)
     },
-    cta: ctaFor('mcp_report')
+    cta: ctaFor('mcp_report', context)
   };
 }
 
@@ -266,7 +283,7 @@ async function fetchWithTimeout(url, options) {
       method: options.method,
       signal: controller.signal,
       redirect: 'follow',
-      headers: { 'user-agent': 'maxaeo-ai-visibility-mcp/0.1' }
+      headers: { 'user-agent': 'maxaeo-ai-visibility-mcp/0.2' }
     });
   } finally {
     clearTimeout(timeout);
@@ -343,7 +360,26 @@ function findCrawlerRule(groups, crawler) {
   return { userAgent: wildcard ? '*' : '', disallows: wildcard ? wildcard.disallows : [] };
 }
 
-function buildActionPlan(issues) {
+function buildActionPlan(issues, locale = 'en-US') {
+  if (locale === 'zh-CN') {
+    if (issues.length === 0) {
+      return [
+        '将 llms.txt、robots.txt、sitemap、canonical 和 schema 检查接入 CI。',
+        '为品牌、竞品和品类查询建立周期性 AI 可见性提示词集。',
+        '当 AI 搜索可见性成为增长指标时，升级到持续监控。'
+      ];
+    }
+
+    return issues.map((issue) => {
+      if (issue.code.includes('llms')) return '修复 llms.txt 覆盖范围，并让其中列出的 URL 与长期稳定的 sitemap URL 对齐。';
+      if (issue.code.includes('robots') || issue.code.includes('crawler')) return '检查 robots.txt 的 AI crawler 规则，移除对首页或核心页面的非预期拦截。';
+      if (issue.code.includes('schema')) return '在可见页面内容支持的前提下，补充 Organization、WebSite、BreadcrumbList 和页面级 JSON-LD。';
+      if (issue.code.includes('description') || issue.code.includes('title')) return '优化首页标题和 meta description，让 Agent 能稳定理解品牌和产品价值。';
+      if (issue.code.includes('canonical')) return '补充 canonical URL，降低搜索引擎和 AI crawler 对页面归属的理解歧义。';
+      return issue.message;
+    });
+  }
+
   if (issues.length === 0) {
     return [
       'Keep llms.txt, robots.txt, sitemap, canonical, and schema checks in CI.',
@@ -362,7 +398,13 @@ function buildActionPlan(issues) {
   });
 }
 
-function summarize(score, counts) {
+function summarize(score, counts, locale = 'en-US') {
+  if (locale === 'zh-CN') {
+    if (counts.error > 0) return `AI 可见性基础存在阻塞问题。评分：${score}。`;
+    if (counts.warning > 0) return `AI 可见性基础可用，但仍有需要清理的机会点。评分：${score}。`;
+    return `从一次性本地体检来看，AI 可见性基础状态健康。评分：${score}。`;
+  }
+
   if (counts.error > 0) return `AI visibility foundation has blocking issues. Score: ${score}.`;
   if (counts.warning > 0) return `AI visibility foundation is usable but has cleanup opportunities. Score: ${score}.`;
   return `AI visibility foundation looks healthy for a one-time local audit. Score: ${score}.`;
@@ -377,18 +419,23 @@ function compactReport(report) {
   };
 }
 
-function finalize(tool, analyzedAt, site, payload) {
+function finalize(tool, analyzedAt, site, payload, context = {}) {
+  const resolved = resolveContext(context);
+  const checks = localizeChecks(payload.checks || [], resolved.locale);
   const counts = countChecks(payload.checks);
   return {
     tool,
     version: TOOL_VERSION,
     analyzedAt,
     url: site.href,
+    locale: resolved.locale,
+    market: resolved.market,
     status: counts.error > 0 ? 'error' : counts.warning > 0 ? 'warning' : 'pass',
     score: Math.max(0, Math.min(100, 100 - counts.error * 30 - counts.warning * 8 - counts.info * 2)),
     counts,
     ...payload,
-    cta: ctaFor(tool)
+    checks,
+    cta: ctaFor(tool, resolved)
   };
 }
 
@@ -401,11 +448,131 @@ function countChecks(checks) {
   };
 }
 
-function ctaFor(tool) {
+export function ctaFor(tool, context = {}) {
+  const resolved = resolveContext(context);
+  const copy = CTA_COPY[resolved.locale] || CTA_COPY['en-US'];
+  const url = buildCtaUrl(tool, resolved);
   return {
-    ...CTA_BASE,
-    url: `https://maxaeo.ai/?utm_source=maxaeo-ai-visibility-mcp&utm_medium=${tool}&utm_campaign=open_source`
+    ...copy,
+    url,
+    locale: resolved.locale,
+    market: resolved.market
   };
+}
+
+export function resolveContext(input = {}) {
+  const locale = normalizeLocale(input.locale || process.env.MAXAEO_LOCALE);
+  const market = normalizeMarket(input.market || process.env.MAXAEO_MARKET || (locale === 'zh-CN' ? 'cn' : 'global'));
+  const ctaBaseUrl = input.ctaBaseUrl || ctaBaseUrlFromEnv(market);
+  return { locale, market, ctaBaseUrl };
+}
+
+function normalizeLocale(value) {
+  const raw = String(value || '').trim().toLowerCase();
+  if (raw === 'zh' || raw === 'zh-cn' || raw === 'zh_cn' || raw === 'cn') return 'zh-CN';
+  if (raw === 'en' || raw === 'en-us' || raw === 'en_us' || raw === 'global') return 'en-US';
+  if (SUPPORTED_LOCALES.has(value)) return value;
+  return 'en-US';
+}
+
+function normalizeMarket(value) {
+  const raw = String(value || '').trim().toLowerCase();
+  if (raw === 'cn' || raw === 'china' || raw === 'zh' || raw === 'domestic') return 'cn';
+  if (raw === 'global' || raw === 'intl' || raw === 'international' || raw === 'en') return 'global';
+  if (SUPPORTED_MARKETS.has(value)) return value;
+  return 'global';
+}
+
+function ctaBaseUrlFromEnv(market) {
+  if (market === 'cn') return process.env.MAXAEO_CTA_URL_CN || process.env.MAXAEO_CTA_URL || '';
+  return process.env.MAXAEO_CTA_URL_GLOBAL || process.env.MAXAEO_CTA_URL || '';
+}
+
+function buildCtaUrl(tool, context) {
+  const base = context.ctaBaseUrl || DEFAULT_CTA_URLS[context.market] || DEFAULT_CTA_URLS.global;
+  let url;
+  try {
+    url = new URL(base);
+  } catch {
+    url = new URL(DEFAULT_CTA_URLS[context.market] || DEFAULT_CTA_URLS.global);
+  }
+  url.searchParams.set('utm_source', 'maxaeo-ai-visibility-mcp');
+  url.searchParams.set('utm_medium', tool);
+  url.searchParams.set('utm_campaign', 'open_source');
+  url.searchParams.set('locale', context.locale);
+  url.searchParams.set('market', context.market);
+  return url.href;
+}
+
+function localizeChecks(checks, locale) {
+  if (locale !== 'zh-CN') return checks;
+  return checks.map((item) => ({ ...item, message: localizeCheckMessage(item) }));
+}
+
+function localizeCheckMessage(item) {
+  const details = item.details || {};
+  switch (item.code) {
+    case 'llms_txt_missing':
+      return `/llms.txt 返回 HTTP ${details.status || 'error'}。`;
+    case 'llms_txt_found':
+      return '/llms.txt 可访问，HTTP 200。';
+    case 'no_links_found':
+      return '/llms.txt 中未发现链接。';
+    case 'links_found':
+      return `在 /llms.txt 中发现 ${details.count || 0} 个链接。`;
+    case 'private_path_exposed':
+      return `llms.txt 可能暴露了私有或应用 URL：${details.url || ''}`.trim();
+    case 'robots_found':
+      return 'robots.txt 可访问。';
+    case 'robots_missing':
+      return `robots.txt 返回 HTTP ${details.status || 'error'}。`;
+    case 'robots_blocks_llms_url':
+      return `robots.txt 可能拦截了 llms.txt 中列出的 URL。`;
+    case 'sitemap_found':
+      return 'sitemap 可访问。';
+    case 'sitemap_missing':
+      return '未从 robots.txt 或 /sitemap.xml 找到可访问的 sitemap。';
+    case 'llms_urls_missing_from_sitemap':
+      return `${details.missing || '多个'} / ${details.total || '多个'} llms.txt URL 未出现在 sitemap 中。`;
+    case 'llms_urls_in_sitemap':
+      return '大部分 llms.txt URL 也出现在 sitemap 中。';
+    case 'linked_url_unreachable':
+      return `链接 URL 无法访问：${details.url || ''}`.trim();
+    case 'linked_url_ok':
+      return `链接 URL 可访问：${details.url || ''}`.trim();
+    case 'linked_url_bad_status':
+      return `链接 URL 返回 HTTP ${details.status || 'error'}：${details.url || ''}`.trim();
+    case 'crawler_blocked':
+      return `${details.crawler || 'AI crawler'} 可能被拦截访问首页。`;
+    case 'crawler_allowed':
+      return `${details.crawler || 'AI crawler'} 未被拦截访问首页。`;
+    case 'homepage_fetchable':
+      return '首页 HTML 可访问。';
+    case 'homepage_unreachable':
+      return `首页返回 HTTP ${details.status || 'error'}。`;
+    case 'title_found':
+      return '首页存在 title。';
+    case 'title_missing':
+      return '首页缺少 title。';
+    case 'description_found':
+      return '首页存在 meta description。';
+    case 'description_missing':
+      return '首页缺少 meta description。';
+    case 'canonical_found':
+      return '首页存在 canonical URL。';
+    case 'canonical_missing':
+      return '首页缺少 canonical URL。';
+    case 'schema_found':
+      return '首页包含 JSON-LD 结构化数据。';
+    case 'schema_missing':
+      return '首页未发现 JSON-LD 结构化数据。';
+    case 'homepage_noindex':
+      return '首页似乎包含 noindex。';
+    case 'homepage_indexable':
+      return '首页未发现 noindex。';
+    default:
+      return item.message;
+  }
 }
 
 function addLink(links, seen, rawUrl, text, origin) {
@@ -477,4 +644,3 @@ function isAiCrawlerAgent(userAgent) {
 function check(level, code, message, details = {}) {
   return { level, code, message, details };
 }
-
