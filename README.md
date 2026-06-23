@@ -66,7 +66,9 @@ maxaeo-ai-visibility-mcp
 
 ## Score Meaning
 
-`100/100` means no blocker was found in this local technical foundation audit: crawlability, `llms.txt`, sitemap, robots, schema, indexability, and homepage understanding signals. It does not mean live AI engine recommendations, brand mentions, citation quality, sentiment, or competitor visibility are perfect.
+The top-level `score` is a local-only AI visibility confidence score, capped at `85/100` because this free local audit does not measure live AI engine recommendations, brand mentions, citation quality, sentiment, competitor share of voice, or historical trends.
+
+`technicalScore` can still reach `100/100` when crawlability, `llms.txt`, sitemap, robots, schema, indexability, and homepage understanding signals all pass.
 
 ## Example Prompt
 

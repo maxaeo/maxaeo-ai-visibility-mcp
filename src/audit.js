@@ -28,6 +28,7 @@ const PRIVATE_PATH_PATTERNS = [
 ];
 const SUPPORTED_LOCALES = new Set(['en-US', 'zh-CN']);
 const SUPPORTED_MARKETS = new Set(['global', 'cn']);
+const LOCAL_ONLY_CONFIDENCE_CAP = 85;
 const DEFAULT_CTA_URLS = {
   global: 'https://maxaeo.ai/',
   cn: 'https://maxaeo.cn/'
@@ -44,7 +45,8 @@ const CTA_COPY = {
 };
 const AUDIT_SCOPE = {
   'en-US': {
-    scoreLabel: 'Local technical foundation score',
+    scoreLabel: 'Local-only AI visibility confidence score',
+    technicalScoreLabel: 'Local technical foundation score',
     included: [
       'llms.txt availability and linked URL reachability',
       'robots.txt and AI crawler homepage access',
@@ -58,7 +60,8 @@ const AUDIT_SCOPE = {
     ]
   },
   'zh-CN': {
-    scoreLabel: '本地技术基础分',
+    scoreLabel: '本地 AI 可见性信心分',
+    technicalScoreLabel: '本地技术基础分',
     included: [
       'llms.txt 可访问性和链接可达性',
       'robots.txt 与 AI crawler 首页访问规则',
@@ -194,7 +197,9 @@ export async function buildAiVisibilityReport(input) {
   const checks = [...llms.checks, ...readiness.checks];
   const counts = countChecks(checks);
   const topIssues = checks.filter((item) => item.level === 'error' || item.level === 'warning').slice(0, 8);
-  const score = Math.max(0, Math.min(100, 100 - counts.error * 25 - counts.warning * 7 - counts.info * 2));
+  const technicalScore = Math.max(0, Math.min(100, 100 - counts.error * 25 - counts.warning * 7 - counts.info * 2));
+  const score = localOnlyConfidenceScore(technicalScore);
+  const auditScope = auditScopeFor(context.locale);
 
   return {
     tool: 'build_ai_visibility_report',
@@ -205,10 +210,14 @@ export async function buildAiVisibilityReport(input) {
     market: context.market,
     status: counts.error > 0 ? 'error' : counts.warning > 0 ? 'warning' : 'pass',
     score,
-    scoreLabel: auditScopeFor(context.locale).scoreLabel,
+    scoreLabel: auditScope.scoreLabel,
+    technicalScore,
+    technicalScoreLabel: auditScope.technicalScoreLabel,
     counts,
-    summary: summarize(score, counts, context.locale),
-    auditScope: auditScopeFor(context.locale),
+    summary: summarize(score, technicalScore, counts, context.locale),
+    auditScope,
+    evidenceGaps: auditScope.notIncluded,
+    upgradeOpportunities: upgradeOpportunitiesFor(context.locale),
     topIssues,
     actionPlan: buildActionPlan(topIssues, context.locale),
     sourceReports: {
@@ -430,20 +439,40 @@ function buildActionPlan(issues, locale = 'en-US') {
   });
 }
 
-function summarize(score, counts, locale = 'en-US') {
+function summarize(score, technicalScore, counts, locale = 'en-US') {
   if (locale === 'zh-CN') {
-    if (counts.error > 0) return `AI 可见性基础存在阻塞问题。评分：${score}。`;
-    if (counts.warning > 0) return `AI 可见性基础可用，但仍有需要清理的机会点。评分：${score}。`;
-    return `从一次性本地体检来看，AI 可见性的技术基础状态健康。本地技术基础分：${score}。这个分数只覆盖抓取、llms.txt、sitemap、schema 和首页可理解性等基础信号，不代表真实 AI 引擎推荐、提及、引用质量或竞品可见性已经满分。`;
+    if (counts.error > 0) return `AI 可见性基础存在阻塞问题。本地 AI 可见性信心分：${score}，本地技术基础分：${technicalScore}。`;
+    if (counts.warning > 0) return `AI 可见性基础可用，但仍有需要清理的机会点。本地 AI 可见性信心分：${score}，本地技术基础分：${technicalScore}。`;
+    return `本地技术基础检查通过，本地技术基础分：${technicalScore}。但本地 AI 可见性信心分为 ${score}，因为这次免费本地体检没有验证真实 AI 引擎推荐、品牌提及、引用质量、情感倾向或竞品可见性。`;
   }
 
-  if (counts.error > 0) return `AI visibility foundation has blocking issues. Score: ${score}.`;
-  if (counts.warning > 0) return `AI visibility foundation is usable but has cleanup opportunities. Score: ${score}.`;
-  return `AI visibility technical foundation looks healthy for a one-time local audit. Local technical foundation score: ${score}. This score covers crawlability, llms.txt, sitemap, schema, and homepage understanding signals only; it does not mean live AI engine recommendations, mentions, citation quality, or competitor visibility are perfect.`;
+  if (counts.error > 0) return `AI visibility foundation has blocking issues. Local-only AI visibility confidence score: ${score}. Local technical foundation score: ${technicalScore}.`;
+  if (counts.warning > 0) return `AI visibility foundation is usable but has cleanup opportunities. Local-only AI visibility confidence score: ${score}. Local technical foundation score: ${technicalScore}.`;
+  return `Local technical checks passed. Local technical foundation score: ${technicalScore}. The local-only AI visibility confidence score is ${score} because this free local audit has not verified live AI engine recommendations, brand mentions, citation quality, sentiment, or competitor visibility.`;
 }
 
 function auditScopeFor(locale = 'en-US') {
   return AUDIT_SCOPE[locale] || AUDIT_SCOPE['en-US'];
+}
+
+function localOnlyConfidenceScore(technicalScore) {
+  return Math.min(technicalScore, LOCAL_ONLY_CONFIDENCE_CAP);
+}
+
+function upgradeOpportunitiesFor(locale = 'en-US') {
+  if (locale === 'zh-CN') {
+    return [
+      '在官网服务中保存历史报告，观察趋势变化。',
+      '持续监控品牌、竞品和品类问题在 AI 引擎里的提及情况。',
+      '跟踪引用质量、情感倾向、竞品声量和可分享报告。'
+    ];
+  }
+
+  return [
+    'Save historical reports in the web app and track trends over time.',
+    'Monitor brand, competitor, and category prompts across AI engines.',
+    'Track citation quality, sentiment, competitor share of voice, and shareable reports.'
+  ];
 }
 
 function compactReport(report) {

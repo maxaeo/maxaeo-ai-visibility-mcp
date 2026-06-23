@@ -109,7 +109,9 @@ MAXAEO_CTA_URL_GLOBAL=https://maxaeo.ai/
 
 ## 分数含义
 
-`100/100` 表示这次本地技术基础体检没有发现阻塞问题，覆盖抓取、`llms.txt`、sitemap、robots、schema、indexability 和首页可理解性等基础信号。它不代表真实 AI 引擎推荐、品牌提及、引用质量、情感倾向或竞品可见性已经满分。
+顶层 `score` 是本地 AI 可见性信心分，免费本地体检最高只到 `85/100`，因为它不检测真实 AI 引擎推荐、品牌提及、引用质量、情感倾向、竞品声量或历史趋势。
+
+当抓取、`llms.txt`、sitemap、robots、schema、indexability 和首页可理解性等基础信号全部通过时，`technicalScore` 仍然可以是 `100/100`。
 
 ## 升级路径
 
