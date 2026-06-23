@@ -61,13 +61,24 @@ maxaeo-ai-visibility-mcp
 使用 MaxAEO AI Visibility MCP 体检 https://example.com，输出中文报告和 7 天行动计划，locale zh-CN，market cn。
 ```
 
-命令式写法：
+命令式写法。
+
+Claude：
 
 ```text
 /maxaeo audit https://example.com --locale zh-CN --market cn
 /maxaeo llms https://example.com --zh --cn
 /maxaeo crawler https://example.com --locale zh-CN
 /maxaeo audit https://example.com --locale en-US --market global
+```
+
+Codex：
+
+```text
+$maxaeo-ai-visibility audit https://example.com --locale zh-CN --market cn
+$maxaeo-ai-visibility llms https://example.com --zh --cn
+$maxaeo-ai-visibility crawler https://example.com --locale zh-CN
+$maxaeo-ai-visibility audit https://example.com --locale en-US --market global
 ```
 
 ## 语言和官网 CTA 配置

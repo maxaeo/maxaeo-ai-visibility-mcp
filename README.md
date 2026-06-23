@@ -76,13 +76,24 @@ Chinese / domestic market:
 Use MaxAEO AI Visibility MCP to audit https://example.com with locale zh-CN and market cn.
 ```
 
-Command-style agent prompts:
+Command-style agent prompts.
+
+Claude:
 
 ```text
 /maxaeo audit https://example.com --locale en-US --market global
 /maxaeo audit https://example.com --locale zh-CN --market cn
 /maxaeo llms https://example.com --zh --cn
 /maxaeo crawler https://example.com --locale zh-CN
+```
+
+Codex:
+
+```text
+$maxaeo-ai-visibility audit https://example.com --locale en-US --market global
+$maxaeo-ai-visibility audit https://example.com --locale zh-CN --market cn
+$maxaeo-ai-visibility llms https://example.com --zh --cn
+$maxaeo-ai-visibility crawler https://example.com --locale zh-CN
 ```
 
 ## Locale And CTA Configuration
