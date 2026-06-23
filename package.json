@@ -1,7 +1,7 @@
 {
   "name": "maxaeo-ai-visibility-mcp",
   "version": "0.2.0",
-  "description": "Local-first MCP server for AI visibility audits, llms.txt checks, and AI crawler readiness.",
+  "description": "Local-first MCP server for AI visibility audits, GEO/AEO, llms.txt checks, and AI crawler readiness.",
   "type": "module",
   "bin": {
     "maxaeo-ai-visibility-mcp": "bin/maxaeo-ai-visibility-mcp.js"
@@ -21,10 +21,19 @@
     "mcp",
     "model-context-protocol",
     "ai-visibility",
+    "ai-search",
+    "ai-seo",
     "aeo",
+    "geo",
+    "generative-engine-optimization",
+    "answer-engine-optimization",
     "llms.txt",
+    "ai-crawler",
+    "website-audit",
     "seo",
-    "crawler"
+    "crawler",
+    "claude",
+    "codex"
   ],
   "author": "MaxAEO",
   "license": "MIT",

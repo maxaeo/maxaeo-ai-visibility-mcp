@@ -1,10 +1,18 @@
-# MaxAEO AI Visibility MCP
+# MaxAEO AI Visibility MCP Server：GEO / AEO / AI SEO 体检
 
-本项目是一个 local-first 的 MCP server，用于 AI 可见性体检。
+本项目是一个 local-first 的 Model Context Protocol (MCP) server，用于 AI 可见性体检、GEO、AEO、AI SEO、`llms.txt` 和 AI crawler readiness 检查。
 
 [English README](README.md)
 
 它帮助 Claude、Codex、Cursor 等 Agent 检查一个公开网站是否便于 AI 搜索理解、抓取和引用。默认只做本地/公开网页检查，不调用 MaxAEO 云端 API，不上传用户域名，不调用 LLM API，也不做隐藏遥测。
+
+## 使用场景
+
+- 从 MCP client 或 coding agent 中运行 AI 可见性体检。
+- 检查网站的 GEO / generative engine optimization 基础。
+- 检查网站的 AEO / answer engine optimization 基础。
+- 校验 `llms.txt`、robots.txt、sitemap、canonical、noindex、metadata 和 JSON-LD。
+- 在不调用付费 LLM/Search API 的前提下生成 7 天行动计划。
 
 ## 工具
 

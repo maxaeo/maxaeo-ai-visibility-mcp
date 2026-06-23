@@ -1,10 +1,18 @@
-# MaxAEO AI Visibility MCP
+# MaxAEO AI Visibility MCP Server for GEO, AEO, and AI SEO
 
-Local-first MCP server for AI visibility audits.
+Local-first Model Context Protocol (MCP) server for AI visibility audits, GEO, AEO, AI SEO, `llms.txt`, and AI crawler readiness.
 
 [中文文档](README.zh-CN.md)
 
-It helps AI agents check whether a public website is crawlable, understandable, and ready for AI search workflows. By default, it only performs local/public-web checks. It does not call MaxAEO cloud APIs, upload user domains, invoke LLM APIs, or use hidden telemetry.
+It helps Claude, Codex, Cursor, and other MCP-compatible agents check whether a public website is crawlable, understandable, and ready for AI search workflows. By default, it only performs local/public-web checks. It does not call MaxAEO cloud APIs, upload user domains, invoke LLM APIs, or use hidden telemetry.
+
+## Use Cases
+
+- Run an AI visibility audit from an MCP client or coding agent.
+- Check GEO / generative engine optimization readiness.
+- Check AEO / answer engine optimization basics for answer engines and AI search.
+- Validate `llms.txt`, robots.txt, sitemap alignment, canonical URLs, noindex, metadata, and JSON-LD.
+- Generate a local 7-day action plan without using paid LLM or search APIs.
 
 ## Tools
 
