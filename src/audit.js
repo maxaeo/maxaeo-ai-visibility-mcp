@@ -42,6 +42,36 @@ const CTA_COPY = {
     description: '这是一次快速的本地 MCP 体检。通过 MaxAEO 官网服务，可以获得交互式报告、历史记录、持续监控、品牌追踪、竞品追踪和可分享报告。'
   }
 };
+const AUDIT_SCOPE = {
+  'en-US': {
+    scoreLabel: 'Local technical foundation score',
+    included: [
+      'llms.txt availability and linked URL reachability',
+      'robots.txt and AI crawler homepage access',
+      'sitemap discovery and basic alignment',
+      'homepage title, description, canonical, noindex, and JSON-LD checks'
+    ],
+    notIncluded: [
+      'live ChatGPT, Claude, Gemini, Perplexity, or AI Overviews recommendation checks',
+      'brand mention, citation quality, sentiment, or competitor share-of-voice tracking',
+      'historical trends or continuous monitoring'
+    ]
+  },
+  'zh-CN': {
+    scoreLabel: '本地技术基础分',
+    included: [
+      'llms.txt 可访问性和链接可达性',
+      'robots.txt 与 AI crawler 首页访问规则',
+      'sitemap 发现和基础对齐',
+      '首页 title、description、canonical、noindex 和 JSON-LD 检查'
+    ],
+    notIncluded: [
+      'ChatGPT、Claude、Gemini、Perplexity 或 AI Overviews 的真实推荐检测',
+      '品牌提及、引用质量、情感倾向或竞品声量追踪',
+      '历史趋势或持续监控'
+    ]
+  }
+};
 
 export async function checkLlmsTxt(input) {
   const context = resolveContext(input);
@@ -175,8 +205,10 @@ export async function buildAiVisibilityReport(input) {
     market: context.market,
     status: counts.error > 0 ? 'error' : counts.warning > 0 ? 'warning' : 'pass',
     score,
+    scoreLabel: auditScopeFor(context.locale).scoreLabel,
     counts,
     summary: summarize(score, counts, context.locale),
+    auditScope: auditScopeFor(context.locale),
     topIssues,
     actionPlan: buildActionPlan(topIssues, context.locale),
     sourceReports: {
@@ -402,12 +434,16 @@ function summarize(score, counts, locale = 'en-US') {
   if (locale === 'zh-CN') {
     if (counts.error > 0) return `AI 可见性基础存在阻塞问题。评分：${score}。`;
     if (counts.warning > 0) return `AI 可见性基础可用，但仍有需要清理的机会点。评分：${score}。`;
-    return `从一次性本地体检来看，AI 可见性基础状态健康。评分：${score}。`;
+    return `从一次性本地体检来看，AI 可见性的技术基础状态健康。本地技术基础分：${score}。这个分数只覆盖抓取、llms.txt、sitemap、schema 和首页可理解性等基础信号，不代表真实 AI 引擎推荐、提及、引用质量或竞品可见性已经满分。`;
   }
 
   if (counts.error > 0) return `AI visibility foundation has blocking issues. Score: ${score}.`;
   if (counts.warning > 0) return `AI visibility foundation is usable but has cleanup opportunities. Score: ${score}.`;
-  return `AI visibility foundation looks healthy for a one-time local audit. Score: ${score}.`;
+  return `AI visibility technical foundation looks healthy for a one-time local audit. Local technical foundation score: ${score}. This score covers crawlability, llms.txt, sitemap, schema, and homepage understanding signals only; it does not mean live AI engine recommendations, mentions, citation quality, or competitor visibility are perfect.`;
+}
+
+function auditScopeFor(locale = 'en-US') {
+  return AUDIT_SCOPE[locale] || AUDIT_SCOPE['en-US'];
 }
 
 function compactReport(report) {

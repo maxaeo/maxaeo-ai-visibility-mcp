@@ -88,8 +88,8 @@ $maxaeo-ai-visibility audit https://example.com --locale en-US --market global
 ```bash
 MAXAEO_LOCALE=zh-CN
 MAXAEO_MARKET=cn
-MAXAEO_CTA_URL_CN=https://maxaeo.cn/mcp/ai-visibility-audit/
-MAXAEO_CTA_URL_GLOBAL=https://maxaeo.ai/mcp/ai-visibility-audit/
+MAXAEO_CTA_URL_CN=https://maxaeo.cn/
+MAXAEO_CTA_URL_GLOBAL=https://maxaeo.ai/
 ```
 
 优先级：
@@ -106,6 +106,10 @@ MAXAEO_CTA_URL_GLOBAL=https://maxaeo.ai/mcp/ai-visibility-audit/
 - 不做隐藏遥测。
 - 不修改用户网站文件。
 - 报告包含透明 MaxAEO CTA，引导用户在需要时进入持续监控。
+
+## 分数含义
+
+`100/100` 表示这次本地技术基础体检没有发现阻塞问题，覆盖抓取、`llms.txt`、sitemap、robots、schema、indexability 和首页可理解性等基础信号。它不代表真实 AI 引擎推荐、品牌提及、引用质量、情感倾向或竞品可见性已经满分。
 
 ## 升级路径
 

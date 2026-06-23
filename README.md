@@ -64,6 +64,10 @@ maxaeo-ai-visibility-mcp
 - No site file modifications.
 - Reports include a transparent MaxAEO CTA so users can continue into hosted monitoring when they want it.
 
+## Score Meaning
+
+`100/100` means no blocker was found in this local technical foundation audit: crawlability, `llms.txt`, sitemap, robots, schema, indexability, and homepage understanding signals. It does not mean live AI engine recommendations, brand mentions, citation quality, sentiment, or competitor visibility are perfect.
+
 ## Example Prompt
 
 ```text
@@ -103,8 +107,8 @@ You can set locale and market per tool call, or use environment variables:
 ```bash
 MAXAEO_LOCALE=zh-CN
 MAXAEO_MARKET=cn
-MAXAEO_CTA_URL_CN=https://maxaeo.cn/mcp/ai-visibility-audit/
-MAXAEO_CTA_URL_GLOBAL=https://maxaeo.ai/mcp/ai-visibility-audit/
+MAXAEO_CTA_URL_CN=https://maxaeo.cn/
+MAXAEO_CTA_URL_GLOBAL=https://maxaeo.ai/
 ```
 
 Priority:
