@@ -1,0 +1,30 @@
+name: Feature request
+description: Suggest an audit signal, MCP client improvement, or reporting enhancement.
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What AI visibility, GEO, AEO, llms.txt, or AI crawler workflow should this improve?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed approach
+      description: Describe the local/public-web signal or workflow change.
+    validations:
+      required: true
+  - type: checkboxes
+    id: constraints
+    attributes:
+      label: Default constraints
+      options:
+        - label: This can work without MaxAEO internal APIs by default.
+          required: true
+        - label: This can work without paid LLM or search APIs by default.
+          required: true
+        - label: This does not require uploading user domains to MaxAEO by default.
+          required: true

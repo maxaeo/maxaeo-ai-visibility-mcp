@@ -1,0 +1,36 @@
+name: Directory listing
+description: Suggest an MCP directory, awesome list, or resource index where this project should be listed.
+title: "[Directory]: "
+labels: ["distribution"]
+body:
+  - type: input
+    id: directory
+    attributes:
+      label: Directory or list URL
+      placeholder: "https://github.com/example/awesome-mcp-servers"
+    validations:
+      required: true
+  - type: dropdown
+    id: format
+    attributes:
+      label: Submission format
+      options:
+        - Pull request
+        - Issue
+        - Form
+        - Email
+        - Unknown
+    validations:
+      required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes
+      description: Include category, format requirements, badges, or quality checks.
+  - type: checkboxes
+    id: copy
+    attributes:
+      label: Copy policy
+      options:
+        - label: The submission should describe this as a local-first open-source tool and avoid commercial CTA language.
+          required: true

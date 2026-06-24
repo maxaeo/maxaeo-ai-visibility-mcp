@@ -12,6 +12,7 @@
     "examples",
     "README.md",
     "README.zh-CN.md",
+    "CONTRIBUTING.md",
     "CHANGELOG.md",
     "LICENSE"
   ],
@@ -35,7 +36,16 @@
     "seo",
     "crawler",
     "claude",
-    "codex"
+    "codex",
+    "openai-codex",
+    "claude-code",
+    "chatgpt",
+    "gptbot",
+    "claudebot",
+    "perplexity",
+    "gemini",
+    "ai-overviews",
+    "ai-citation"
   ],
   "author": "MaxAEO",
   "license": "MIT",

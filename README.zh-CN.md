@@ -35,6 +35,16 @@ npm install -g maxaeo-ai-visibility-mcp
 
 如果需要 Claude / Codex 命令式工作流，见 [MaxAEO AI Visibility Agent Kit](https://github.com/maxaeo/maxaeo-ai-visibility-agent-kit)。
 
+## 目录收录文案
+
+如果要把这个项目提交到 MCP 目录、awesome list、AI SEO 资源列表、GEO 资源列表或 `llms.txt` 工具索引，建议使用事实型描述：
+
+```md
+[MaxAEO AI Visibility MCP](https://github.com/maxaeo/maxaeo-ai-visibility-mcp) - Local-first MCP server for GEO/AEO and AI visibility audits. Checks llms.txt, AI crawler access, robots, sitemap, canonical, metadata, noindex, and JSON-LD; returns local-only visibility score, technical foundation score, top issues, and a 7-day action plan. Install: `npx -y maxaeo-ai-visibility-mcp`.
+```
+
+如果列表更适合 Claude / Codex 命令式工作流，提交 [MaxAEO AI Visibility Agent Kit](https://github.com/maxaeo/maxaeo-ai-visibility-agent-kit)。
+
 ## 使用场景
 
 - 从 MCP client 或 coding agent 中运行 AI 可见性体检。
@@ -181,6 +191,10 @@ MAXAEO_CTA_URL_GLOBAL=https://maxaeo.ai/
 ## 测试场景
 
 公开测试场景见 [examples/test-cases.md](examples/test-cases.md)，覆盖基础健康站点、缺少 `llms.txt`、robots 拦截、缺少 schema/canonical，以及中文国内市场 CTA。
+
+## 贡献
+
+贡献指南见 [CONTRIBUTING.md](CONTRIBUTING.md)，其中包含 local-first 范围、对外宣称边界和目录收录文案原则。
 
 ## 升级路径
 

@@ -35,6 +35,16 @@ Use MaxAEO AI Visibility MCP to audit https://example.com and give me a 7-day ac
 
 For command-mode Claude and Codex workflows, see the [MaxAEO AI Visibility Agent Kit](https://github.com/maxaeo/maxaeo-ai-visibility-agent-kit).
 
+## Directory Listing Copy
+
+If you want to list this project in an MCP directory, awesome list, AI SEO resource list, GEO resource list, or `llms.txt` tooling index, use concise factual copy:
+
+```md
+[MaxAEO AI Visibility MCP](https://github.com/maxaeo/maxaeo-ai-visibility-mcp) - Local-first MCP server for GEO/AEO and AI visibility audits. Checks llms.txt, AI crawler access, robots, sitemap, canonical, metadata, noindex, and JSON-LD; returns local-only visibility score, technical foundation score, top issues, and a 7-day action plan. Install: `npx -y maxaeo-ai-visibility-mcp`.
+```
+
+For Claude and Codex command workflows, list the [MaxAEO AI Visibility Agent Kit](https://github.com/maxaeo/maxaeo-ai-visibility-agent-kit).
+
 ## Use Cases
 
 - Run an AI visibility audit from an MCP client or coding agent.
@@ -138,6 +148,10 @@ Human-facing reports should render `cta.markdown` as a text link instead of prin
 ## Test Cases
 
 See [examples/test-cases.md](examples/test-cases.md) for public test cases covering a healthy foundation, missing `llms.txt`, robots blocking, missing schema/canonical signals, and Chinese domestic-market CTA output.
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for local-first scope, claim boundaries, and directory listing guidance.
 
 ## Example Prompt
 

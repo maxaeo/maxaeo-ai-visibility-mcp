@@ -1,0 +1,57 @@
+name: Bug report
+description: Report a reproducible issue with the MCP server or audit output.
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: What happened, and what did you expect instead?
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Package version
+      placeholder: "0.3.0"
+    validations:
+      required: true
+  - type: dropdown
+    id: client
+    attributes:
+      label: MCP client or agent
+      options:
+        - Claude Desktop / Claude Code
+        - OpenAI Codex
+        - Cursor
+        - Windsurf
+        - VS Code
+        - Other MCP client
+    validations:
+      required: true
+  - type: input
+    id: command
+    attributes:
+      label: Install or run command
+      placeholder: "npx -y maxaeo-ai-visibility-mcp"
+    validations:
+      required: true
+  - type: textarea
+    id: url
+    attributes:
+      label: Public test URL
+      description: Share a public URL only if it is safe to disclose.
+      placeholder: "https://example.com"
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant logs or output
+      render: text
+  - type: checkboxes
+    id: boundary
+    attributes:
+      label: Privacy boundary
+      options:
+        - label: I did not include private credentials, internal URLs, or sensitive customer data.
+          required: true

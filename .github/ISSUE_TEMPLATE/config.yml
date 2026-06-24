@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Security issue
+    url: https://maxaeo.ai/
+    about: Please report vulnerabilities privately. Do not open public issues for sensitive security reports.

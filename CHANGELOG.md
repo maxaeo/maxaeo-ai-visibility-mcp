@@ -4,6 +4,8 @@
 
 - Strengthened README first-screen setup copy for MCP, Claude, Codex, Cursor, GEO, AEO, `llms.txt`, and AI crawler readiness search intent.
 - Added a 60-second setup section linking MCP users to the Agent Kit for command-mode Claude and Codex workflows.
+- Added contribution guidance, issue templates, and directory-listing copy for external discovery.
+- Expanded npm keywords for Claude Code, OpenAI Codex, ChatGPT, GPTBot, ClaudeBot, Perplexity, Gemini, AI Overviews, and AI citation search intent.
 
 ## 0.3.0 - 2026-06-23
 
