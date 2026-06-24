@@ -1,10 +1,39 @@
 # MaxAEO AI Visibility MCP Server for GEO, AEO, and AI SEO
 
-Local-first Model Context Protocol (MCP) server for AI visibility audits, GEO, AEO, AI SEO, `llms.txt`, and AI crawler readiness.
+Local-first Model Context Protocol (MCP) server for AI visibility audits, GEO, AEO, AI SEO, `llms.txt`, and AI crawler readiness in Claude, Codex, Cursor, Windsurf, and other MCP-compatible agents.
 
 [中文文档](README.zh-CN.md)
 
 It helps Claude, Codex, Cursor, and other MCP-compatible agents check whether a public website is crawlable, understandable, and ready for AI search workflows. By default, it only performs local/public-web checks. It does not call MaxAEO cloud APIs, upload user domains, invoke LLM APIs, or use hidden telemetry.
+
+## 60-Second Setup
+
+Install from npm:
+
+```bash
+npm install -g maxaeo-ai-visibility-mcp
+```
+
+Add to an MCP client:
+
+```json
+{
+  "mcpServers": {
+    "maxaeo-ai-visibility": {
+      "command": "npx",
+      "args": ["-y", "maxaeo-ai-visibility-mcp"]
+    }
+  }
+}
+```
+
+Run an audit from your agent:
+
+```text
+Use MaxAEO AI Visibility MCP to audit https://example.com and give me a 7-day action plan.
+```
+
+For command-mode Claude and Codex workflows, see the [MaxAEO AI Visibility Agent Kit](https://github.com/maxaeo/maxaeo-ai-visibility-agent-kit).
 
 ## Use Cases
 
@@ -13,6 +42,15 @@ It helps Claude, Codex, Cursor, and other MCP-compatible agents check whether a 
 - Check AEO / answer engine optimization basics for answer engines and AI search.
 - Validate `llms.txt`, robots.txt, sitemap alignment, canonical URLs, noindex, metadata, and JSON-LD.
 - Generate a local 7-day action plan without using paid LLM or search APIs.
+
+Common search intents this MCP server targets:
+
+- AI visibility MCP server
+- Claude SEO MCP
+- Codex AI visibility audit
+- GEO / AEO local website audit
+- `llms.txt` checker
+- AI crawler readiness for GPTBot, ClaudeBot, PerplexityBot, Google-Extended, and AI search workflows
 
 ## Tools
 

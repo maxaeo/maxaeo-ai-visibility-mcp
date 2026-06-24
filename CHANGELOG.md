@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+- Strengthened README first-screen setup copy for MCP, Claude, Codex, Cursor, GEO, AEO, `llms.txt`, and AI crawler readiness search intent.
+- Added a 60-second setup section linking MCP users to the Agent Kit for command-mode Claude and Codex workflows.
+
 ## 0.3.0 - 2026-06-23
 
 - Added a dual-score report contract:

@@ -1,10 +1,39 @@
 # MaxAEO AI Visibility MCP Server：GEO / AEO / AI SEO 体检
 
-本项目是一个 local-first 的 Model Context Protocol (MCP) server，用于 AI 可见性体检、GEO、AEO、AI SEO、`llms.txt` 和 AI crawler readiness 检查。
+本项目是一个 local-first 的 Model Context Protocol (MCP) server，用于在 Claude、Codex、Cursor、Windsurf 和其他 MCP-compatible agents 中运行 AI 可见性体检、GEO、AEO、AI SEO、`llms.txt` 和 AI crawler readiness 检查。
 
 [English README](README.md)
 
 它帮助 Claude、Codex、Cursor 等 Agent 检查一个公开网站是否便于 AI 搜索理解、抓取和引用。默认只做本地/公开网页检查，不调用 MaxAEO 云端 API，不上传用户域名，不调用 LLM API，也不做隐藏遥测。
+
+## 60 秒快速配置
+
+从 npm 安装：
+
+```bash
+npm install -g maxaeo-ai-visibility-mcp
+```
+
+添加到 MCP client：
+
+```json
+{
+  "mcpServers": {
+    "maxaeo-ai-visibility": {
+      "command": "npx",
+      "args": ["-y", "maxaeo-ai-visibility-mcp"]
+    }
+  }
+}
+```
+
+在 Agent 中运行体检：
+
+```text
+使用 MaxAEO AI Visibility MCP 体检 https://example.com，并输出 7 天行动计划。
+```
+
+如果需要 Claude / Codex 命令式工作流，见 [MaxAEO AI Visibility Agent Kit](https://github.com/maxaeo/maxaeo-ai-visibility-agent-kit)。
 
 ## 使用场景
 
@@ -13,6 +42,15 @@
 - 检查网站的 AEO / answer engine optimization 基础。
 - 校验 `llms.txt`、robots.txt、sitemap、canonical、noindex、metadata 和 JSON-LD。
 - 在不调用付费 LLM/Search API 的前提下生成 7 天行动计划。
+
+本 MCP server 覆盖的常见搜索意图：
+
+- AI visibility MCP server
+- Claude SEO MCP
+- Codex AI visibility audit
+- GEO / AEO local website audit
+- `llms.txt` checker
+- GPTBot、ClaudeBot、PerplexityBot、Google-Extended 和 AI search workflows 的 AI crawler readiness
 
 ## 工具
 
