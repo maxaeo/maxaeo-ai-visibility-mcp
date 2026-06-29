@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.3.1 - 2026-06-29
+
 - Strengthened README first-screen setup copy for MCP, Claude, Codex, Cursor, GEO, AEO, `llms.txt`, and AI crawler readiness search intent.
 - Added a 60-second setup section linking MCP users to the Agent Kit for command-mode Claude and Codex workflows.
 - Added contribution guidance, issue templates, and directory-listing copy for external discovery.

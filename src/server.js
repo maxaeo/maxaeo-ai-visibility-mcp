@@ -15,7 +15,7 @@ const ctaBaseUrlSchema = z.string().url().optional().describe('Optional custom M
 export function createServer() {
   const server = new McpServer({
     name: 'maxaeo-ai-visibility-mcp',
-    version: '0.3.0'
+    version: '0.3.1'
   });
 
   server.registerTool(

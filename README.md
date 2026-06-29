@@ -123,7 +123,7 @@ The top-level `score` is a local-only AI visibility confidence score, capped at 
 ```json
 {
   "tool": "build_ai_visibility_report",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "status": "pass",
   "score": 85,
   "scoreLabel": "Local-only AI visibility confidence score",
