@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+## 0.3.2 - 2026-07-01
+
+- Added official MCP Registry metadata with `server.json`.
+- Added npm `mcpName` ownership marker for `io.github.maxaeo/maxaeo-ai-visibility-mcp`.
+
 ## 0.3.1 - 2026-06-29
 
 - Strengthened README first-screen setup copy for MCP, Claude, Codex, Cursor, GEO, AEO, `llms.txt`, and AI crawler readiness search intent.

@@ -26,7 +26,7 @@ test('stdio MCP server exposes build_ai_visibility_report', async () => {
     });
 
     assert.equal(result.structuredContent.tool, 'build_ai_visibility_report');
-    assert.equal(result.structuredContent.version, '0.3.1');
+    assert.equal(result.structuredContent.version, '0.3.2');
     assert.equal(result.structuredContent.locale, 'zh-CN');
     assert.equal(result.structuredContent.market, 'cn');
     assert.equal(result.structuredContent.scoreLabel, '本地 AI 可见性信心分');

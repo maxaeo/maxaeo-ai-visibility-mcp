@@ -166,7 +166,7 @@ MAXAEO_CTA_URL_GLOBAL=https://maxaeo.ai/
 ```json
 {
   "tool": "build_ai_visibility_report",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "status": "pass",
   "score": 85,
   "scoreLabel": "本地 AI 可见性信心分",

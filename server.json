@@ -1,0 +1,44 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.maxaeo/maxaeo-ai-visibility-mcp",
+  "title": "MaxAEO AI Visibility MCP",
+  "description": "Local-first MCP server for AI visibility, GEO/AEO, llms.txt, and AI crawler readiness audits.",
+  "repository": {
+    "url": "https://github.com/maxaeo/maxaeo-ai-visibility-mcp",
+    "source": "github"
+  },
+  "version": "0.3.2",
+  "websiteUrl": "https://github.com/maxaeo/maxaeo-ai-visibility-mcp",
+  "packages": [
+    {
+      "registryType": "npm",
+      "registryBaseUrl": "https://registry.npmjs.org",
+      "identifier": "maxaeo-ai-visibility-mcp",
+      "version": "0.3.2",
+      "runtimeHint": "npx",
+      "transport": {
+        "type": "stdio"
+      }
+    }
+  ],
+  "_meta": {
+    "io.modelcontextprotocol.registry/publisher-provided": {
+      "tools": [
+        "check_llms_txt",
+        "audit_ai_crawler_readiness",
+        "build_ai_visibility_report"
+      ],
+      "cost_boundary": [
+        "No MaxAEO API calls",
+        "No LLM API calls",
+        "No domain uploads",
+        "No hidden telemetry",
+        "No site file modifications"
+      ],
+      "maxaeo_cta": {
+        "global": "https://maxaeo.ai/",
+        "cn": "https://maxaeo.cn/"
+      }
+    }
+  }
+}
