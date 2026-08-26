@@ -1,7 +1,8 @@
 const DEFAULT_TIMEOUT_MS = 10000;
 const DEFAULT_MAX_LINKS = 30;
-const TOOL_VERSION = '0.3.2';
-const AI_CRAWLERS = [
+const TOOL_VERSION = '0.4.0';
+// Global market. Every token here is published by its operator.
+const AI_CRAWLERS_GLOBAL = [
   'GPTBot',
   'ChatGPT-User',
   'OAI-SearchBot',
@@ -12,6 +13,36 @@ const AI_CRAWLERS = [
   'Bingbot',
   'Baiduspider'
 ];
+
+// China market. Chinese AI products do not publish their own crawler
+// documentation, and none of them split training and retrieval into separate
+// user-agents. Their answers are retrieved through the parent company's
+// existing search index, so the tokens that matter domestically are the
+// traditional search crawlers below.
+//
+// Every token here is either documented by its operator (Baidu, 360, Huawei,
+// Sogou) or observed across multiple independent Chinese domains' robots.txt
+// (YisouSpider, Bytespider, ToutiaoSpider). Tokens that circulate online but
+// could not be verified - BaiduBot, DoubaoBot, TongyiBot, Kimi-User,
+// ChatGLM-Spider, Qwenbot, Hunyuan, Yuanbao, MetasoBot - are deliberately
+// excluded. They appear zero times across 58 major Chinese domains, and some
+// conflict with the real token. Auditing against a user-agent that does not
+// exist reports a result nobody can act on.
+const AI_CRAWLERS_CN = [
+  'Baiduspider',
+  'Baiduspider-image',
+  'Baiduspider-news',
+  '360Spider',
+  'PetalBot',
+  'Sogou web spider',
+  'YisouSpider',
+  'Bytespider',
+  'ToutiaoSpider'
+];
+
+export function crawlersForMarket(market) {
+  return market === 'cn' ? AI_CRAWLERS_CN : AI_CRAWLERS_GLOBAL;
+}
 const PRIVATE_PATH_PATTERNS = [
   /\/admin\b/i,
   /\/wp-admin\b/i,
@@ -164,7 +195,7 @@ export async function auditAiCrawlerReadiness(input) {
   if (robots.ok) {
     checks.push(check('pass', 'robots_found', 'robots.txt is reachable.', { url: robotsUrl }));
     const groups = parseRobotsGroups(robots.text);
-    for (const crawler of AI_CRAWLERS) {
+    for (const crawler of crawlersForMarket(context.market)) {
       const rule = findCrawlerRule(groups, crawler);
       const blockedRoot = rule.disallows.some((path) => isPathBlocked('/', path));
       crawlerAccess.push({ crawler, allowed: !blockedRoot, matchedUserAgent: rule.userAgent, disallows: rule.disallows });

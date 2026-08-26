@@ -1,6 +1,6 @@
 {
   "name": "maxaeo-ai-visibility-mcp",
-  "version": "0.3.2",
+  "version": "0.4.0",
   "mcpName": "io.github.maxaeo/maxaeo-ai-visibility-mcp",
   "description": "Local-first MCP server for AI visibility audits, GEO/AEO, llms.txt checks, and AI crawler readiness.",
   "type": "module",
