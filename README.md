@@ -78,6 +78,28 @@ All tools support:
 | `market` | `global`, `cn` | CTA market. `global` points to `maxaeo.ai`; `cn` points to `maxaeo.cn`. |
 | `ctaBaseUrl` | URL | Optional custom MaxAEO CTA landing page. |
 
+
+### Crawler coverage by market
+
+`audit_ai_crawler_readiness` selects its crawler list from `market`.
+
+| `market` | Crawlers audited |
+| --- | --- |
+| `global` (default) | `GPTBot`, `ChatGPT-User`, `OAI-SearchBot`, `PerplexityBot`, `ClaudeBot`, `Google-Extended`, `Applebot`, `Bingbot`, `Baiduspider` |
+| `cn` | `Baiduspider`, `Baiduspider-image`, `Baiduspider-news`, `360Spider`, `PetalBot`, `Sogou web spider`, `YisouSpider`, `Bytespider`, `ToutiaoSpider` |
+
+No Chinese AI product publishes crawler documentation, and none of them split
+training and retrieval into separate user-agents the way `GPTBot` and
+`OAI-SearchBot` do. Their answers are retrieved through the parent company's
+existing search index, so the traditional search crawlers are what actually
+gate citation domestically.
+
+Every token in both lists is either documented by its operator or observed
+across multiple independent domains' `robots.txt`. Unverifiable tokens that
+circulate online — `BaiduBot`, `DoubaoBot`, `TongyiBot`, `Kimi-User` and
+similar — are deliberately excluded, and a test enforces that. Auditing against
+a user-agent that does not exist produces a finding nobody can act on.
+
 ## Install
 
 ```bash
@@ -123,7 +145,7 @@ The top-level `score` is a local-only AI visibility confidence score, capped at 
 ```json
 {
   "tool": "build_ai_visibility_report",
-  "version": "0.3.2",
+  "version": "0.4.0",
   "status": "pass",
   "score": 85,
   "scoreLabel": "Local-only AI visibility confidence score",

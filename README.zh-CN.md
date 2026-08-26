@@ -78,6 +78,25 @@ npm install -g maxaeo-ai-visibility-mcp
 | `market` | `global`、`cn` | CTA 市场。`global` 指向 `maxaeo.ai`，`cn` 指向 `maxaeo.cn`。 |
 | `ctaBaseUrl` | URL | 自定义 MaxAEO CTA 落地页。 |
 
+
+### 按市场区分的爬虫覆盖
+
+`audit_ai_crawler_readiness` 根据 `market` 选择爬虫清单。
+
+| `market` | 审计的爬虫 |
+| --- | --- |
+| `global`（默认） | `GPTBot`、`ChatGPT-User`、`OAI-SearchBot`、`PerplexityBot`、`ClaudeBot`、`Google-Extended`、`Applebot`、`Bingbot`、`Baiduspider` |
+| `cn` | `Baiduspider`、`Baiduspider-image`、`Baiduspider-news`、`360Spider`、`PetalBot`、`Sogou web spider`、`YisouSpider`、`Bytespider`、`ToutiaoSpider` |
+
+国内没有任何一家 AI 产品公布过自己的爬虫文档，也没有任何一家把训练与检索拆成
+两个独立 user-agent（像 `GPTBot` 与 `OAI-SearchBot` 那样）。它们的回答来自母公司
+既有的搜索索引，因此在国内真正决定能否被引用的是传统搜索爬虫。
+
+两个清单里的每一个 token，要么有运营方官方文档，要么在多个独立域名的
+`robots.txt` 中被实际观测到。网上流传但无法核实的 token —— `BaiduBot`、
+`DoubaoBot`、`TongyiBot`、`Kimi-User` 等 —— 被刻意排除，并有测试强制约束。
+针对一个并不存在的 user-agent 做审计，只会产出无法据以行动的结论。
+
 ## 安装
 
 ```bash
@@ -166,7 +185,7 @@ MAXAEO_CTA_URL_GLOBAL=https://maxaeo.ai/
 ```json
 {
   "tool": "build_ai_visibility_report",
-  "version": "0.3.2",
+  "version": "0.4.0",
   "status": "pass",
   "score": 85,
   "scoreLabel": "本地 AI 可见性信心分",

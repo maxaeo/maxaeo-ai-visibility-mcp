@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import {
+  crawlersForMarket,
   ctaFor,
   extractLinks,
   extractSitemaps,
@@ -86,4 +87,47 @@ test('resolveContext accepts locale aliases and custom CTA URL', () => {
   assert.equal(context.locale, 'zh-CN');
   assert.equal(context.market, 'cn');
   assert.match(cta.url, /^https:\/\/maxaeo\.cn\/mcp\/ai-visibility-audit\//);
+});
+
+test('crawlersForMarket returns the global set by default', () => {
+  const global = crawlersForMarket('global');
+  assert.ok(global.includes('GPTBot'));
+  assert.ok(global.includes('OAI-SearchBot'));
+  assert.deepEqual(crawlersForMarket(undefined), global);
+});
+
+test('crawlersForMarket returns China-specific crawlers for the cn market', () => {
+  const cn = crawlersForMarket('cn');
+  assert.ok(cn.includes('Baiduspider'));
+  assert.ok(cn.includes('PetalBot'));
+  assert.ok(cn.includes('Sogou web spider'));
+  assert.ok(cn.includes('Bytespider'));
+});
+
+test('crawler lists contain no unverified user-agents', () => {
+  // These tokens circulate in blog posts and community lists but appear zero
+  // times across 58 major Chinese domains' robots.txt, and some conflict with
+  // the real token (Baiduspider, not BaiduBot). Auditing against a user-agent
+  // that does not exist produces a finding nobody can act on.
+  const unverified = [
+    'BaiduBot', 'BaiduSpider-AI', 'DoubaoBot', 'Doubao', 'AlibabaBot',
+    'Alibaba-Crawler-AI', 'TongyiBot', 'YiyanBot', 'Kimi-User', 'Kimi',
+    'ChatGLM', 'ChatGLM-Spider', 'Qwenbot', 'Hunyuan', 'Yuanbao',
+    'PanguBot', 'MetasoBot', 'DeepSeekBot'
+  ];
+  for (const market of ['global', 'cn']) {
+    const list = crawlersForMarket(market).map((item) => item.toLowerCase());
+    for (const token of unverified) {
+      assert.ok(
+        !list.includes(token.toLowerCase()),
+        `${token} is not a verifiable crawler and must not be audited (${market})`
+      );
+    }
+  }
+});
+
+test('each market audits the same number of crawlers so scores stay comparable', () => {
+  // technicalScore subtracts a fixed amount per blocked crawler, so changing
+  // the list length between markets would silently change the score scale.
+  assert.equal(crawlersForMarket('cn').length, crawlersForMarket('global').length);
 });

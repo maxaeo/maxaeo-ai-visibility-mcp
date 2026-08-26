@@ -2,6 +2,39 @@
 
 ## Unreleased
 
+## 0.4.0 - 2026-08-26
+
+### Changed
+
+- `audit_ai_crawler_readiness` now selects its crawler list by `market`.
+  `market: global` is unchanged. `market: cn` previously audited a Chinese site
+  against the global crawler list, which reported on user-agents that have
+  little bearing on whether a Chinese AI product can retrieve the page.
+
+### Added
+
+- China crawler set: `Baiduspider`, `Baiduspider-image`, `Baiduspider-news`,
+  `360Spider`, `PetalBot`, `Sogou web spider`, `YisouSpider`, `Bytespider`,
+  `ToutiaoSpider`. Each is either documented by its operator or observed across
+  multiple independent Chinese domains' `robots.txt`.
+- Tests asserting no unverified user-agent can enter either list, and that both
+  lists stay the same length so `technicalScore` remains comparable across
+  markets.
+
+### Notes
+
+No Chinese AI product publishes crawler documentation, and none of them split
+training and retrieval into separate user-agents the way `GPTBot` and
+`OAI-SearchBot` do. Their answers are retrieved through the parent company's
+existing search index, so the traditional search crawlers are what actually
+gate citation domestically.
+
+Tokens that circulate online but could not be verified — `BaiduBot`,
+`DoubaoBot`, `TongyiBot`, `Kimi-User`, `ChatGLM-Spider`, `Qwenbot`, `Hunyuan`,
+`Yuanbao`, `MetasoBot` — are deliberately excluded. They appear zero times
+across 58 major Chinese domains, and some conflict with the real token
+(`Baiduspider`, not `BaiduBot`).
+
 ## 0.3.2 - 2026-07-01
 
 - Added official MCP Registry metadata with `server.json`.
