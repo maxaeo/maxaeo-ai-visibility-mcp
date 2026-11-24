@@ -1,0 +1,8 @@
+{
+  "name": "maxaeo-ai-visibility",
+  "version": "1.0.0",
+  "description": "AI search visibility (GEO / AEO): live ChatGPT, Perplexity, Gemini and Google AI Mode answers and citations for your brand.",
+  "mcpServers": {
+    "maxaeo": { "httpUrl": "https://maxaeo.ai/geoapi/geodata/developer/mcp?src=gemini-cli" }
+  }
+}

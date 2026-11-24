@@ -1,0 +1,5 @@
+{
+  "mcpServers": {
+    "maxaeo": { "url": "https://maxaeo.ai/geoapi/geodata/developer/mcp?src=cursor" }
+  }
+}

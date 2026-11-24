@@ -11,7 +11,28 @@
 
 > 早期的本地包 `maxaeo-ai-visibility-mcp`（npm）已停用：它只做站点静态检查，远程版会真的去问各个 AI 平台。
 
-## 接入
+## 作为插件安装（MCP + 技能）
+
+插件把远程 MCP 和 3 个现成技能装在一起，直接问「豆包有没有推荐我的品牌」就能出报告：
+
+| 技能 | 能做什么 |
+|---|---|
+| `ai-visibility` | 品牌在 AI 回答里有没有被推荐、排第几、推荐了谁、引用了哪些网站 |
+| `geo-citation-check` | AI 回答你所在品类时最爱引用哪些网站，该去哪发内容 |
+| `ai-share-of-voice` | 和竞品比：各被推荐几次、排第几 |
+
+**Claude Code**
+
+```bash
+claude plugin marketplace add maxaeo/maxaeo-ai-visibility-mcp
+claude plugin install maxaeo-ai-visibility@maxaeo
+```
+
+**只装技能**（支持 Agent Skills 的客户端）：`npx skills add maxaeo/maxaeo-ai-visibility-mcp`
+
+插件默认连海外站 maxaeo.ai；国内账号把 MCP 地址换成 `https://maxaeo.cn/geoapi/geodata/developer/mcp`。第一次调用会打开浏览器登录 MaxAEO 授权，不用复制 Key，新账号送 100 点。
+
+## 只接 MCP
 
 **Claude Code**
 

@@ -1,0 +1,5 @@
+{
+  "mcpServers": {
+    "maxaeo": { "type": "http", "url": "https://maxaeo.ai/geoapi/geodata/developer/mcp?src=claude-code" }
+  }
+}

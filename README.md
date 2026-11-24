@@ -12,7 +12,40 @@ This is a **hosted MCP server**. Nothing to install or run locally.
 
 > The earlier local-only package `maxaeo-ai-visibility-mcp` (npm) is deprecated. It only ran static site checks; the hosted server queries the AI engines for real answers.
 
-## Connect
+## Install as a plugin (MCP + skills)
+
+The plugin bundles the hosted MCP server with three ready-made skills, so you can just ask "is ChatGPT recommending my brand?" and get a report:
+
+| Skill | What you get |
+|---|---|
+| `ai-visibility` | Is your brand recommended in AI answers, at what rank, who is recommended instead, which sources are cited |
+| `geo-citation-check` | Which websites AI engines cite for your category — where to publish or get listed |
+| `ai-share-of-voice` | Your brand vs competitors: how often each is recommended and at what position |
+
+**Claude Code**
+
+```bash
+claude plugin marketplace add maxaeo/maxaeo-ai-visibility-mcp
+claude plugin install maxaeo-ai-visibility@maxaeo
+```
+
+**Cursor** — [![Add MaxAEO to Cursor](https://cursor.com/deeplink/mcp-install-dark.png)](https://cursor.com/install-mcp?name=maxaeo&config=eyJ1cmwiOiJodHRwczovL21heGFlby5haS9nZW9hcGkvZ2VvZGF0YS9kZXZlbG9wZXIvbWNwP3NyYz1jdXJzb3IifQ==)
+
+**Gemini CLI**
+
+```bash
+gemini extensions install https://github.com/maxaeo/maxaeo-ai-visibility-mcp
+```
+
+**Skills only** (any agent that supports Agent Skills)
+
+```bash
+npx skills add maxaeo/maxaeo-ai-visibility-mcp
+```
+
+The first call opens a browser to sign in to MaxAEO (OAuth); no API key to copy. New accounts get 100 free credits.
+
+## Connect (MCP only)
 
 **Claude Code**
 
