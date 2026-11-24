@@ -1,0 +1,29 @@
+{
+  "name": "maxaeo",
+  "displayName": "MaxAEO AI Visibility",
+  "description": "Track AI visibility live: see if ChatGPT, Perplexity, Gemini and DeepSeek mention your brand, its rank vs competitors, and which URLs they cite (GEO / AEO).",
+  "version": "1.0.0",
+  "author": {
+    "name": "MaxAEO",
+    "url": "https://maxaeo.ai/?utm_source=cursor&utm_medium=plugin"
+  },
+  "homepage": "https://maxaeo.ai/ai-visibility-api/?utm_source=cursor&utm_medium=plugin",
+  "repository": "https://github.com/maxaeo/maxaeo-ai-visibility-mcp",
+  "license": "MIT",
+  "keywords": [
+    "ai-visibility",
+    "geo",
+    "aeo",
+    "llm-seo",
+    "brand-monitoring",
+    "share-of-voice",
+    "ai-citations",
+    "chatgpt",
+    "perplexity",
+    "gemini",
+    "mcp"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./mcp.json",
+  "logo": ".claude-plugin/icon.png"
+}
