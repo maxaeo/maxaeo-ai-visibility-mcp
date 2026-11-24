@@ -1,0 +1,30 @@
+{
+  "name": "maxaeo-ai-visibility",
+  "displayName": "MaxAEO AI Visibility",
+  "description": "AI search visibility checks: ask ChatGPT, Perplexity, Gemini, Google AI Mode, DeepSeek and Doubao buyer questions live, then see if your brand is recommended, its rank vs competitors, and which sources AI cites (GEO / AEO).",
+  "version": "1.0.0",
+  "author": {
+    "name": "MaxAEO",
+    "url": "https://maxaeo.ai/?utm_source=claude-code&utm_medium=plugin"
+  },
+  "homepage": "https://maxaeo.ai/ai-visibility-api/?utm_source=claude-code&utm_medium=plugin",
+  "repository": "https://github.com/maxaeo/maxaeo-ai-visibility-mcp",
+  "license": "MIT",
+  "keywords": [
+    "ai-visibility",
+    "geo",
+    "aeo",
+    "llm-seo",
+    "brand-monitoring",
+    "share-of-voice",
+    "ai-citations",
+    "chatgpt",
+    "perplexity",
+    "gemini",
+    "mcp"
+  ],
+  "icon": ".claude-plugin/icon.png",
+  "documentationUrl": "https://maxaeo.ai/docs/developers/mcp/?utm_source=claude-code&utm_medium=plugin",
+  "privacyPolicyUrl": "https://maxaeo.ai/privacy-policy/",
+  "termsOfServiceUrl": "https://maxaeo.ai/terms/"
+}
