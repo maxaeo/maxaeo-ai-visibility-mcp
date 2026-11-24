@@ -1,44 +1,34 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
-  "name": "io.github.maxaeo/maxaeo-ai-visibility-mcp",
-  "title": "MaxAEO AI Visibility MCP",
-  "description": "Local-first MCP server for AI visibility, GEO/AEO, llms.txt, and AI crawler readiness audits.",
+  "name": "ai.maxaeo/ai-visibility-api",
+  "title": "MaxAEO AI Visibility API (hosted MCP)",
+  "description": "Track how ChatGPT, Gemini, Perplexity and other AI search engines mention and cite a brand.",
+  "version": "1.1.2",
+  "websiteUrl": "https://maxaeo.ai/ai-visibility-api/",
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://maxaeo.ai/geoapi/geodata/developer/mcp",
+      "headers": [
+        {
+          "name": "Authorization",
+          "description": "Optional. Sign in with your MaxAEO account via OAuth (recommended), or send your MaxAEO API key as a Bearer token.",
+          "value": "Bearer {api_key}",
+          "isRequired": false,
+          "isSecret": true,
+          "variables": {
+            "api_key": {
+              "description": "MaxAEO API key",
+              "isRequired": false,
+              "isSecret": true
+            }
+          }
+        }
+      ]
+    }
+  ],
   "repository": {
     "url": "https://github.com/maxaeo/maxaeo-ai-visibility-mcp",
     "source": "github"
-  },
-  "version": "0.4.0",
-  "websiteUrl": "https://github.com/maxaeo/maxaeo-ai-visibility-mcp",
-  "packages": [
-    {
-      "registryType": "npm",
-      "registryBaseUrl": "https://registry.npmjs.org",
-      "identifier": "maxaeo-ai-visibility-mcp",
-      "version": "0.4.0",
-      "runtimeHint": "npx",
-      "transport": {
-        "type": "stdio"
-      }
-    }
-  ],
-  "_meta": {
-    "io.modelcontextprotocol.registry/publisher-provided": {
-      "tools": [
-        "check_llms_txt",
-        "audit_ai_crawler_readiness",
-        "build_ai_visibility_report"
-      ],
-      "cost_boundary": [
-        "No MaxAEO API calls",
-        "No LLM API calls",
-        "No domain uploads",
-        "No hidden telemetry",
-        "No site file modifications"
-      ],
-      "maxaeo_cta": {
-        "global": "https://maxaeo.ai/",
-        "cn": "https://maxaeo.cn/"
-      }
-    }
   }
 }
